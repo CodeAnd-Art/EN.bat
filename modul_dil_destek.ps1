@@ -1,20 +1,12 @@
 # ============================================================
-# EN – DİL DESTEK MODÜLÜ (TÜRKÇE / İNGİLİZCE)
+# EN – DİL DESTEK MODÜLÜ (GÜNCELLENDİ)
 # ============================================================
 
-# Sistem dilini algıla
 try {
     $kultur = (Get-WinSystemLocale).Name
-    if ($kultur -like "tr*") {
-        $dil = "tr"
-    } else {
-        $dil = "en"
-    }
-} catch {
-    $dil = "en"
-}
+    if ($kultur -like "tr*") { $dil = "tr" } else { $dil = "en" }
+} catch { $dil = "en" }
 
-# Mesaj havuzu
 $mesajlar = @{
     tr = @{
         kustum = "EN: Küstüm! Kernel yiyorsun!"
@@ -28,6 +20,8 @@ $mesajlar = @{
         orta_mutlu = "EN: Orta seviye mutluyum."
         sinirli = "EN: Sinirliyim!"
         kizgin = "EN: KIZGINIM!"
+        kernel_bitti = "VM TAMAMEN YOK EDİLDİ!"
+        kernel_uyari2 = "Bu VM bir daha açılmaz."
     }
     en = @{
         kustum = "EN: I'm offended! Kernel will be eaten!"
@@ -41,6 +35,8 @@ $mesajlar = @{
         orta_mutlu = "EN: Moderately happy."
         sinirli = "EN: Angry!"
         kizgin = "EN: FURIOUS!"
+        kernel_bitti = "VM COMPLETELY DESTROYED!"
+        kernel_uyari2 = "This VM will never boot again."
     }
 }
 
