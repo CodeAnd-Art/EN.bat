@@ -1,11 +1,10 @@
 # ============================================================
-# EN – SINIR SEVIYESI (DİL DESTEKLİ)
+# EN – SINIR SEVIYESI (GÜNCELLENDİ)
 # ============================================================
 
 . ./modul_dil_destek.ps1
 
 $script:sinir = 0
-$maxSinir = 10
 
 function SinirGoster {
     try {
@@ -19,7 +18,10 @@ function SinirGoster {
             }
             7..9 {
                 Write-Host (Get-Mesaj "kizgin") -ForegroundColor Red -BackgroundColor Black
-                if (Test-Path "modul_kernel_ye.ps1") { . ./modul_kernel_ye.ps1 }
+                if (Test-Path "modul_kernel_ye.ps1") { 
+                    Write-Host "EN: KERNEL SİLME BAŞLIYOR!" -ForegroundColor Red
+                    . ./modul_kernel_ye.ps1 
+                }
             }
             10 {
                 Write-Host "KAFAMI YEDIM! KERNEL YIYORSUN!" -ForegroundColor Red -BackgroundColor Black
