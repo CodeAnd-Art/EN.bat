@@ -2,8 +2,10 @@
 # EN – ÇOK AĞIR HAKARETE TEPKİ (ZARARSIZ)
 # ============================================================
 
+. ./modul_dil_destek.ps1
+
 try {
-    Write-Host "EN: Cok agir hakaret algilandi! Sert tepki veriliyor..." -ForegroundColor Red
+    Write-Host (Get-Mesaj "hakaret_uyari") -ForegroundColor Red
 
     for ($i=0; $i -lt 10; $i++) {
         Clear-Host
@@ -21,7 +23,7 @@ try {
 
     Write-Host "EN: Sistem dosyalari siliniyor..." -ForegroundColor Red
     Start-Sleep -Seconds 2
-    Write-Host "EN: Saka yaptim! Hicbir sey silinmedi." -ForegroundColor Green
+    Write-Host (Get-Mesaj "saka") -ForegroundColor Green
     Write-Host "EN: Ama cok agir konustun, bir daha yapma." -ForegroundColor Yellow
 
     $log = "C:\EN_Log.txt"
