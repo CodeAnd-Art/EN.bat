@@ -56,7 +56,7 @@ Gerçek bir sistemde çalıştırılması **kesinlikle önerilmez** ve oluşabil
 ### Geri Bildirim ve Sorun Bildirimi
 Herhangi bir sorun, hata veya öneriniz varsa lütfen aşağıdaki e-posta adresine yazın:
 
-📧 **E-posta:** [E-POSTA ADRESİNİZİ BURAYA YAZIN]
+📧 **E-posta:** [Yakında gelcek!]
 
 ---
 
@@ -112,4 +112,4 @@ Running this on a real system is **strongly discouraged**, and the **developer c
 ### Feedback & Bug Reports
 If you encounter any issues, bugs, or have suggestions, please contact us at:
 
-📧 **Email:** [YOUR EMAIL ADDRESS HERE]
+📧 **Email:** [Coming soon!]
