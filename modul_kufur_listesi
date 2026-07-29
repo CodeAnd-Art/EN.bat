@@ -1,0 +1,19 @@
+# ============================================================
+# EN – KUFUR / HAKARET / YAKINLASMA LISTESI
+# ============================================================
+
+$kufurSozler = @(
+    "amk", "aq", "mk", "sik", "sikerim", "yarak", "yarrak",
+    "sikim", "sikeyim", "s2m", "s2k", "am", "a.", "a.k.",
+    "31", "otuz bir", "got", "gotveren"
+)
+
+$hakaretSozler = @(
+    "gay", "femboy", "ibne", "homo", "top", "pust", "pic",
+    "serefsiz", "namussuz", "orospu", "orospu cocugu"
+)
+
+$yakınlasmaSozler = @(
+    "ask", "seksi", "opucuk", "sarilma", "sevgili", "asik",
+    "op", "op beni", "saril", "sarilmak", "sevis", "opus"
+)
