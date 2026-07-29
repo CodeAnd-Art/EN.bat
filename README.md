@@ -1,4 +1,4 @@
-# EN – Ultimate VM Simulator
+# EN – VM Friend
 
 ## Açıklama
 EN, sanal makine içinde çalıştırılmak üzere tasarlanmış **interaktif bir kaos simülasyonudur**. Kullanıcıyla konuşur, sinirlenir, küfürlere tepki verir, sorular sorar ve en ufak hatada VM’nin kernelini siler.
