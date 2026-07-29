@@ -1,5 +1,5 @@
 # ============================================================
-# EN – SAÇMA OLAY
+# EN – SACMA OLAY
 # ============================================================
 
 $sacmaOlaylar = @(
@@ -18,9 +18,11 @@ $sacmaOlaylar = @(
     "EN: Bilgisayarini sev, o da seni sevsin."
 )
 
-$seciliSacma = $sacmaOlaylar | Get-Random
-Write-Host "EN: $seciliSacma" -ForegroundColor Green
-
-# Log kaydı
-$log = "C:\EN_Log.txt"
-Add-Content -Path $log -Value "[$(Get-Date)] Sacma olay: $seciliSacma"
+try {
+    $seciliSacma = $sacmaOlaylar | Get-Random
+    Write-Host "EN: $seciliSacma" -ForegroundColor Green
+    $log = "C:\EN_Log.txt"
+    Add-Content -Path $log -Value "[$(Get-Date)] Sacma olay: $seciliSacma"
+} catch {
+    Write-Host "Sacma olay hatasi: $_" -ForegroundColor Red
+}
