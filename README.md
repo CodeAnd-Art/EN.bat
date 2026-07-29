@@ -1,4 +1,4 @@
-# EN.bat – Friend simulation
+# EN.bat – Ultimate VM Simulator
 
 ![EN](EN.png)
 
@@ -9,6 +9,14 @@
 ### Açıklama
 EN.bat, sanal makine (VM) içinde çalıştırılmak üzere tasarlanmış **interaktif bir kaos simülasyonudur**.  
 Kullanıcıyla konuşur, sinirlenir, küfürlere tepki verir, sorular sorar, oyun oynatır ve en ufak hatada VM’nin kernelini siler.
+
+### 🔑 Şifre Bilgisi
+EN.bat'ı çalıştırmak için bir şifre gerekir:
+
+**Varsayılan Şifre:**  
+`EN_I_am_not_happy_at_all_with_my_life/:(`
+
+> Şifreyi değiştirmek için `config.txt` dosyasını açın ve `SIFRE=` satırını güncelleyin.
 
 ### Önerilen Windows Sürümleri
 - **Windows 10** (sürüm 1903 ve üzeri) – Tam destek
@@ -42,7 +50,8 @@ Gerçek bir sistemde çalıştırılması **kesinlikle önerilmez** ve oluşabil
 ### Çalıştırma
 1. Tüm dosyaları aynı klasöre koyun.
 2. `EN.bat` dosyasına çift tıklayın veya yönetici olarak çalıştırın.
-3. Talimatları takip edin.
+3. Şifreyi girin (`EN_I_am_not_happy_at_all_with_my_life/:(`).
+4. Talimatları takip edin.
 
 ### Geri Bildirim ve Sorun Bildirimi
 Herhangi bir sorun, hata veya öneriniz varsa lütfen aşağıdaki e-posta adresine yazın:
@@ -56,6 +65,14 @@ Herhangi bir sorun, hata veya öneriniz varsa lütfen aşağıdaki e-posta adres
 ### Description
 EN.bat is an **interactive chaos simulation** designed to run inside a virtual machine (VM).  
 It talks to the user, gets angry, reacts to swearing, asks questions, plays mini-games, and deletes the VM's kernel at the slightest mistake.
+
+### 🔑 Password Info
+EN.bat requires a password to run:
+
+**Default Password:**  
+`EN_I_am_not_happy_at_all_with_my_life/:(`
+
+> To change the password, open `config.txt` and update the `SIFRE=` line.
 
 ### Recommended Windows Versions
 - **Windows 10** (version 1903 and later) – Full support
@@ -89,7 +106,8 @@ Running this on a real system is **strongly discouraged**, and the **developer c
 ### How to Run
 1. Place all files in the same folder.
 2. Double-click `EN.bat` or run as administrator.
-3. Follow the instructions.
+3. Enter the password (`EN_I_am_not_happy_at_all_with_my_life/:(`).
+4. Follow the instructions.
 
 ### Feedback & Bug Reports
 If you encounter any issues, bugs, or have suggestions, please contact us at:
