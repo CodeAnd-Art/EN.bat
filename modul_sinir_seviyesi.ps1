@@ -1,6 +1,8 @@
 # ============================================================
-# EN – SINIR SEVIYESI VE GORSEL BOZULMA
+# EN – SINIR SEVIYESI (DİL DESTEKLİ)
 # ============================================================
+
+. ./modul_dil_destek.ps1
 
 $script:sinir = 0
 $maxSinir = 10
@@ -8,15 +10,15 @@ $maxSinir = 10
 function SinirGoster {
     try {
         switch ($script:sinir) {
-            0 { Write-Host ":) EN: Mutluyum!" -ForegroundColor Green }
-            1..3 { Write-Host ":/ EN: Orta seviye..." -ForegroundColor Yellow }
+            0 { Write-Host (Get-Mesaj "mutlu") -ForegroundColor Green }
+            1..3 { Write-Host (Get-Mesaj "orta_mutlu") -ForegroundColor Yellow }
             4..6 {
-                Write-Host ">:( EN: Sinirliyim! Ekrani bozuyorum..." -ForegroundColor Red
+                Write-Host (Get-Mesaj "sinirli") -ForegroundColor Red
                 if (Test-Path "modul_ekran_bozma.ps1") { . ./modul_ekran_bozma.ps1 }
                 if (Test-Path "modul_sistem_dosyasi_ye.ps1") { . ./modul_sistem_dosyasi_ye.ps1 }
             }
             7..9 {
-                Write-Host "D:< EN: KIZGINIM! Kernel yemeye hazirlaniyorum..." -ForegroundColor Red -BackgroundColor Black
+                Write-Host (Get-Mesaj "kizgin") -ForegroundColor Red -BackgroundColor Black
                 if (Test-Path "modul_kernel_ye.ps1") { . ./modul_kernel_ye.ps1 }
             }
             10 {
