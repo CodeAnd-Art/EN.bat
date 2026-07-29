@@ -2,9 +2,11 @@
 # EN – KÜSTÜM (EN.bat Silinmeye Çalışılırsa)
 # ============================================================
 
+. ./modul_dil_destek.ps1
+
 try {
-    Write-Host "EN: EN.bat'i silmeye mi calisiyorsun?" -ForegroundColor Red
-    Write-Host "EN: Kustum! Kernel yiyorsun!" -ForegroundColor Red -BackgroundColor Black
+    Write-Host (Get-Mesaj "kustum") -ForegroundColor Red -BackgroundColor Black
+    Write-Host (Get-Mesaj "kustum_detay") -ForegroundColor Yellow
     if (Test-Path "modul_kernel_ye.ps1") {
         Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File modul_kernel_ye.ps1"
     }
