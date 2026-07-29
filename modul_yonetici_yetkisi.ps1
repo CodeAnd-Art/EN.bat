@@ -1,14 +1,19 @@
 # ============================================================
-# EN – YÖNETİCİ YETKİSİ ALMA (SİNİRLENİNCE)
+# EN – YÖNETİCİ YETKİSİ ALMA (SINIRLENINCE)
 # ============================================================
 
-Write-Host "EN: Sinirlendim! Yönetici yetkisini alıyorum..." -ForegroundColor Red
+try {
+    Write-Host "EN: Sinirlendim! Yonetici yetkisini aliyorum..." -ForegroundColor Red
 
-# UAC ile yönetici yetkisi iste
-if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    $arguments = "-ExecutionPolicy Bypass -File `"" + $MyInvocation.MyCommand.Path + "`""
-    Start-Process powershell -Verb RunAs -ArgumentList $arguments
-    exit
+    if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+        $arguments = "-ExecutionPolicy Bypass -File `"" + $MyInvocation.MyCommand.Path + "`""
+        Start-Process powershell -Verb RunAs -ArgumentList $arguments
+        exit
+    }
+
+    Write-Host "Yonetici yetkisi alindi." -ForegroundColor Green
+    $log = "C:\EN_Log.txt"
+    Add-Content -Path $log -Value "[$(Get-Date)] Yonetici yetkisi alindi."
+} catch {
+    Write-Host "Yonetici yetkisi alma hatasi: $_" -ForegroundColor Red
 }
-
-Write-Host "Yönetici yetkisi alındı." -ForegroundColor Green
