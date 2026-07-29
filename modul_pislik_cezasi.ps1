@@ -2,8 +2,10 @@
 # EN – PİSLİK CEZASI (SINIR AŞILIRSA)
 # ============================================================
 
+. ./modul_dil_destek.ps1
+
 try {
-    Write-Host "EN: SINIR AŞILDI! PİSLİK CEZASI BASLIYOR..." -ForegroundColor Red -BackgroundColor Black
+    Write-Host (Get-Mesaj "pislik_cezasi") -ForegroundColor Red -BackgroundColor Black
 
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
