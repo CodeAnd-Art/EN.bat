@@ -14,7 +14,7 @@ SINIR_ESIK=10
 KERNEL_SIL=1
 
 # Şifre (boş bırakılırsa şifre sorulmaz)
-SIFRE=123456
+SIFRE=EN_I_am_not_happy_at_all_with_my_life/:(
 
 # Ekran bozma süresi (saniye)
 EKRAN_BOZMA_SURE=60
