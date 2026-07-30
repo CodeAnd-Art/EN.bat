@@ -5,7 +5,7 @@ color 0c
 cls
 
 :: ============================================================
-:: ŞİFRE KONTROLÜ
+:: 1. ŞİFRE KONTROLÜ (config.txt'den okur)
 :: ============================================================
 if exist config.txt (
     for /f "tokens=1,2 delims==" %%a in (config.txt) do (
@@ -23,7 +23,7 @@ if defined sifre if not "%sifre%"=="" (
 )
 
 :: ============================================================
-:: ANA MENU
+:: 2. ANA MENU
 :: ============================================================
 echo ============================================================
 echo   EN AKTIF
@@ -35,12 +35,24 @@ echo   Devam etmek icin bir tusa basin...
 pause >nul
 
 :: ============================================================
-:: MODULLER
+:: 3. MODULLER (SIRALI OLARAK CALISTIRILIR)
 :: ============================================================
+
+:: 3.1 Güvenlik Duvarı (VM / Host kontrolü + deneme sayacı)
 powershell -ExecutionPolicy Bypass -File modul_guvenlik_duvari.ps1
 if %errorlevel% neq 0 exit
 
-powershell -ExecutionPolicy Bypass -File modul_bagimlilik_kontrol.ps1
+:: 3.2 Kendi Kendini Tamir (eksik dosyaları kontrol eder)
 powershell -ExecutionPolicy Bypass -File modul_kendi_tamir.ps1
-powershell -ExecutionPolicy Bypass -File modul_config_oku.ps1
+
+:: 3.3 Ayar Okuyucu (config.txt'den tüm ayarları okur)
+powershell -ExecutionPolicy Bypass -File modul_ayar_oku.ps1
+
+:: 3.4 Ana Döngü (tüm modülleri yönetir)
 powershell -ExecutionPolicy Bypass -File modul_ana_dongu.ps1
+
+:: ============================================================
+:: 4. BİTİŞ (Normal şartlarda buraya gelinmez, ama yine de)
+:: ============================================================
+echo [EN] Program sonlandirildi.
+pause >nul
