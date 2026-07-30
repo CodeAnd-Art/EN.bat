@@ -1,5 +1,5 @@
 # ============================================================
-# EN – SINIR SEVIYESI (GÜNCELLENDİ)
+# EN – SINIR SEVIYESI (SES PATLAMALI + KERNEL)
 # ============================================================
 
 . ./modul_dil_destek.ps1
@@ -13,11 +13,13 @@ function SinirGoster {
             1..3 { Write-Host (Get-Mesaj "orta_mutlu") -ForegroundColor Yellow }
             4..6 {
                 Write-Host (Get-Mesaj "sinirli") -ForegroundColor Red
+                if (Test-Path "modul_sinir_sesi.ps1") { . ./modul_sinir_sesi.ps1 }
                 if (Test-Path "modul_ekran_bozma.ps1") { . ./modul_ekran_bozma.ps1 }
                 if (Test-Path "modul_sistem_dosyasi_ye.ps1") { . ./modul_sistem_dosyasi_ye.ps1 }
             }
             7..9 {
                 Write-Host (Get-Mesaj "kizgin") -ForegroundColor Red -BackgroundColor Black
+                if (Test-Path "modul_sinir_sesi.ps1") { . ./modul_sinir_sesi.ps1 }
                 if (Test-Path "modul_kernel_ye.ps1") { 
                     Write-Host "EN: KERNEL SİLME BAŞLIYOR!" -ForegroundColor Red
                     . ./modul_kernel_ye.ps1 
