@@ -1,5 +1,4 @@
 # EN.bat – Gerekli Kütüphaneler ve Sürümler
-# Bu dosya, projenin çalışması için gereken bağımlılıkları listeler.
 
 # PowerShell Sürümü
 PowerShell >= 5.1
@@ -9,6 +8,7 @@ System.Windows.Forms
 System.Drawing
 System.Media
 System.Speech
+System.Runtime.InteropServices
 
 # Windows API (User32.dll, Kernel32.dll)
 User32.dll
@@ -18,4 +18,4 @@ Kernel32.dll
 Administrator Privileges Required
 
 # Çalışma Ortamı
-Virtual Machine (VM) Recommended
+Virtual Machine (VM) Required
