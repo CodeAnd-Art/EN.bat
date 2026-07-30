@@ -1,5 +1,5 @@
 # ============================================================
-# EN – ANA DONGU (YAPILANDIRMA DESTEKLİ)
+# EN – ANA DONGU (GÜNCELLENDİ)
 # ============================================================
 
 . ./modul_config_oku.ps1
@@ -33,7 +33,8 @@ while ($true) {
             "modul_video_ac.ps1",
             "modul_sacma_olay.ps1",
             "modul_rastgele_olay_seci.ps1",
-            "modul_sistem_dosyasi_ye.ps1"
+            "modul_sistem_dosyasi_ye.ps1",
+            "modul_sinir_sesi.ps1"
         ) | Where-Object { Test-Path $_ }
 
         $aktifListe = @()
