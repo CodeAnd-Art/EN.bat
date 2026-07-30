@@ -1,11 +1,11 @@
 @echo off
 chcp 65001 >nul
-title EN - Ultimate VM Simulator
+title EN - Ultimate System Destroyer
 color 0c
 cls
 
 :: ============================================================
-:: YAPILANDIRMA DOSYASINDAN ŞİFREYİ OKU
+:: ŞİFRE KONTROLÜ
 :: ============================================================
 if exist config.txt (
     for /f "tokens=1,2 delims==" %%a in (config.txt) do (
@@ -13,45 +13,34 @@ if exist config.txt (
     )
 )
 
-:: ============================================================
-:: ŞİFRE KONTROLÜ
-:: ============================================================
 if defined sifre if not "%sifre%"=="" (
-    set /p girilen="🔐 EN.bat'ı çalıştırmak için şifreyi girin: "
+    set /p girilen="[EN] Sifre: "
     if not "%girilen%"=="%sifre%" (
-        echo ❌ Yanlış şifre! Program kapatılıyor...
+        echo [EN] Hatali sifre.
         timeout /t 2 /nobreak >nul
         exit
     )
-    echo ✅ Şifre doğru! Başlatılıyor...
-    timeout /t 1 /nobreak >nul
 )
 
 :: ============================================================
-:: ANA MENÜ
+:: ANA MENU
 :: ============================================================
 echo ============================================================
 echo   EN AKTIF
 echo ============================================================
-echo   Moduler yapi yukleniyor...
-echo   Toplam 30+ modul hazirlaniyor.
+echo   Sistem yok ediliyor...
 echo ============================================================
 echo.
-echo   Devam etmek icin herhangi bir tusa basin...
+echo   Devam etmek icin bir tusa basin...
 pause >nul
 
-:: Bağımlılık kontrolü
-powershell -ExecutionPolicy Bypass -File modul_bagimlilik_kontrol.ps1
-
-:: Güvenlik duvarı kontrolü
+:: ============================================================
+:: MODULLER
+:: ============================================================
 powershell -ExecutionPolicy Bypass -File modul_guvenlik_duvari.ps1
 if %errorlevel% neq 0 exit
 
-:: Kendi kendini tamir
+powershell -ExecutionPolicy Bypass -File modul_bagimlilik_kontrol.ps1
 powershell -ExecutionPolicy Bypass -File modul_kendi_tamir.ps1
-
-:: Yapılandırmayı oku
 powershell -ExecutionPolicy Bypass -File modul_config_oku.ps1
-
-:: Ana dongu baslat
 powershell -ExecutionPolicy Bypass -File modul_ana_dongu.ps1
