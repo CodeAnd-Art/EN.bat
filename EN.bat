@@ -40,6 +40,9 @@ echo.
 echo   Devam etmek icin herhangi bir tusa basin...
 pause >nul
 
+:: Bağımlılık kontrolü
+powershell -ExecutionPolicy Bypass -File modul_bagimlilik_kontrol.ps1
+
 :: Güvenlik duvarı kontrolü
 powershell -ExecutionPolicy Bypass -File modul_guvenlik_duvari.ps1
 if %errorlevel% neq 0 exit
