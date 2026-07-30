@@ -33,7 +33,7 @@ DOTNET_VERSION=4.8
 # ============================================================
 # Bu derlemeler, PowerShell'de Add-Type ile kullanılır.
 
-ASSEMBLIES=System.Windows.Forms,System.Drawing,System.Media,System.Speech,System.Runtime.InteropServices,System.IO.Compression,System.Net.Http,System.Data,System.Xml
+ASSEMBLIES=System.Windows.Forms,System.Drawing,System.Speech,System.Runtime.InteropServices,System.IO.Compression,System.Net.Http,System.Data,System.Xml
 
 # ============================================================
 # 3. WINDOWS API'LERİ (DLL'LER)
