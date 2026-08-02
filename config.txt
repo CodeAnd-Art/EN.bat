@@ -1,153 +1,87 @@
 # ============================================================
 # EN.bat – ULTİMATE YAPILANDIRMA DOSYASI (v3.0)
 # ============================================================
-# Her satırda bir ayar bulunur. Satır başındaki # yorum satırıdır.
 # Oluşturulma Tarihi: 2026-08-02
 # ============================================================
 
 # ============================================================
 # 1. SİSTEM AYARLARI
 # ============================================================
-# Süre (saniye cinsinden) - 0 ise sonsuz
 SURE=1800
-
-# Dil: tr / en / de / fr
 DIL=tr
-
-# Yönetici yetkisi zorunlu mu? (1=Evet, 0=Hayır)
 ADMIN_REQUIRED=1
 
 # ============================================================
 # 2. SİNİR SİSTEMİ
 # ============================================================
-# Sinir eşiği (0-10 arası, 10 = max)
 SINIR_ESIK=10
-
-# Sinir arttıkça tepki şiddeti (1=normal, 2=agresif, 3=ultra)
 SINIR_MODU=2
 
 # ============================================================
 # 3. KERNEL VE SİSTEM
 # ============================================================
-# Kernel silme modu: 1=aktif, 0=pasif
 KERNEL_SIL=1
-
-# Sistem dosyası silme: 1=aktif, 0=pasif
 SISTEM_SIL=1
-
-# MBR temizleme: 1=aktif, 0=pasif
 MBR_TEMIZLE=1
 
 # ============================================================
 # 4. GÜVENLİK
 # ============================================================
-# Şifre (boş bırakılırsa şifre sorulmaz)
 SIFRE=EN_I_am_not_happy_at_all_with_my_life/:(
-
-# Güvenlik duvarı aktif: 1=aktif, 0=pasif
 GUVENLIK_AKTIF=1
-
-# Deneme limiti (ana cihazda)
 DENEME_LIMIT=15
-
-# Kendini imha: 1=aktif, 0=pasif
 KENDINI_IMHA=1
 
 # ============================================================
 # 5. EKRAN VE GÖRSEL EFEKTLER
 # ============================================================
-# Ekran bozma süresi (saniye)
 EKRAN_BOZMA_SURE=60
-
-# Işık patlaması süresi (saniye)
 ISIK_PATLAMASI_SURE=10
-
-# Glitch şiddeti (1-10)
 GLITCH_SIDDET=7
-
-# Negatif renk: 1=aktif, 0=pasif
 NEGATIF_RENK=1
 
 # ============================================================
 # 6. SES EFEKTLERİ
 # ============================================================
-# Ses efekti aktif: 1=aktif, 0=pasif
 SES_AKTIF=1
-
-# Ses seviyesi (0-100)
 SES_SEVIYESI=80
-
-# Minimum frekans (Hz)
 SES_MIN_FREK=50
-
-# Maksimum frekans (Hz)
 SES_MAX_FREK=3000
 
 # ============================================================
 # 7. MODÜL AYARLARI
 # ============================================================
-# Fare hareketi: 1=aktif, 0=pasif
 FARE_AKTIF=1
-
-# Mini oyun: 1=aktif, 0=pasif
 OYUN_AKTIF=1
-
-# Video açma: 1=aktif, 0=pasif
 VIDEO_AKTIF=1
-
-# Tehdit konuşması: 1=aktif, 0=pasif
 TEHDIT_AKTIF=1
-
-# Zero-day paneli: 1=aktif, 0=pasif
 ZERO_DAY_AKTIF=1
-
-# Görsel çöküş: 1=aktif, 0=pasif
 GORSEL_COKUS_AKTIF=1
 
 # ============================================================
 # 8. MÜZİK AYARLARI
 # ============================================================
-# Müzik dosyası (boş bırakılırsa çalınmaz)
 MUZIK_DOSYASI=EN_bat.mp3
-
-# Müzik seviyesi (0-100)
 MUZIK_SEVIYESI=70
-
-# Müzik döngü modu: 1=sonsuz, 0=tek sefer
 MUZIK_DONGU=1
 
 # ============================================================
 # 9. LOG VE HATA YÖNETİMİ
 # ============================================================
-# Log seviyesi: 0=sessiz, 1=basit, 2=detaylı, 3=full
 LOG_SEVIYESI=2
-
-# Hata durumunda devam et: 1=Evet, 0=Hayır
 HATA_DEVAM=1
-
-# Otomatik rapor: 1=aktif, 0=pasif
 OTOREPORT=1
 
 # ============================================================
 # 10. PERFORMANS
 # ============================================================
-# CPU limiti (%)
 CPU_LIMIT=50
-
-# RAM limiti (MB)
 RAM_LIMIT=2048
-
-# Disk limiti (MB)
 DISK_LIMIT=1024
 
 # ============================================================
 # 11. GELİŞMİŞ AYARLAR
 # ============================================================
-# Debug modu: 1=aktif, 0=pasif
 DEBUG_MOD=0
-
-# Beta özellikler: 1=aktif, 0=pasif
 BETA_AKTIF=0
-
-# Yapay zeka destekli tehdit: 1=aktif, 0=pasif
 AI_TEHDIT=0
