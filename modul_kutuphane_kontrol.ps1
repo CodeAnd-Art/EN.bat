@@ -1,19 +1,13 @@
 # ============================================================
-# EN – OTOMATİK KÜTÜPHANE YÜKLEYİCİ
+# EN – GELİŞMİŞ KÜTÜPHANE KONTROLÜ (v3.0)
 # ============================================================
-# Bu modül:
-# - request.txt dosyasındaki ASSEMBLIES listesini okur
-# - Eksik assembly'leri otomatik yüklemeye çalışır
-# - Yüklenemeyenler için çözüm önerisi sunar
-# - Log tutar
+# request.txt dosyasındaki ASSEMBLIES listesini okur,
+# eksik assembly'leri tespit eder ve çözüm önerileri sunar.
 # ============================================================
 
 $requestDosyasi = "request.txt"
 $log = "C:\EN_Log.txt"
 
-# ============================================================
-# 1. ASSEMBLY LİSTESİNİ OKU
-# ============================================================
 function Get-AssemblyList {
     $assemblyList = @()
     if (Test-Path $requestDosyasi) {
@@ -27,152 +21,87 @@ function Get-AssemblyList {
                 }
             }
         } catch {
-            Write-Host "[EN] request.txt okuma hatası: $_" -ForegroundColor Red
+            Write-Host "[EN] request.txt okuma hatasi: $_" -ForegroundColor Red
         }
     }
     return $assemblyList
 }
 
-# ============================================================
-# 2. ASSEMBLY KONTROLÜ VE OTOMATİK YÜKLEME
-# ============================================================
 function Test-Assembly {
     param($assemblyName)
-    
     try {
-        # 1. Yöntem: LoadWithPartialName
-        $asm = [System.Reflection.Assembly]::LoadWithPartialName($assemblyName)
-        if ($asm -ne $null) {
-            return @{
-                Mevcut = $true
-                Ad = $assemblyName
-                YüklenmeYöntemi = "LoadWithPartialName"
-            }
-        }
-        
-        # 2. Yöntem: Add-Type
         Add-Type -AssemblyName $assemblyName -ErrorAction Stop
-        return @{
-            Mevcut = $true
-            Ad = $assemblyName
-            YüklenmeYöntemi = "Add-Type"
-        }
+        return @{ Mevcut = $true; Ad = $assemblyName }
     } catch {
-        # 3. Yöntem: [System.Reflection.Assembly]::LoadFrom (deneme)
-        try {
-            $dllPath = "$env:SystemRoot\Microsoft.NET\Framework64\v4.0.30319\$assemblyName.dll"
-            if (-not (Test-Path $dllPath)) {
-                $dllPath = "$env:SystemRoot\Microsoft.NET\Framework\v4.0.30319\$assemblyName.dll"
-            }
-            if (Test-Path $dllPath) {
-                [System.Reflection.Assembly]::LoadFrom($dllPath) | Out-Null
-                return @{
-                    Mevcut = $true
-                    Ad = $assemblyName
-                    YüklenmeYöntemi = "LoadFrom"
-                }
-            }
-        } catch {}
-        
-        return @{
-            Mevcut = $false
-            Ad = $assemblyName
-            Hata = $_.Exception.Message
-        }
+        return @{ Mevcut = $false; Ad = $assemblyName; Hata = $_.Exception.Message }
     }
 }
 
-# ============================================================
-# 3. ÇÖZÜM ÖNERİLERİ
-# ============================================================
-function Get-ÇözümÖnerisi {
+function Get-CozumOnerisi {
     param($assemblyName)
-    
-    $öneriler = @{
-        "System.Windows.Forms" = "Windows Forms assembly'si. PowerShell'i yönetici olarak çalıştırmayı deneyin."
-        "System.Drawing" = "GDI+ assembly'si. .NET Framework 4.8 veya üzerini yükleyin."
-        "System.Media" = "Ses assembly'si. Windows Media Player'ın yüklü olduğundan emin olun."
-        "System.Speech" = "Konuşma assembly'si. Windows Özellikleri > Konuşma API'si'ni etkinleştirin."
-        "System.Runtime.InteropServices" = "Interop assembly'si. Genellikle Windows'ta hazırdır."
-        "System.IO.Compression" = "Sıkıştırma assembly'si. .NET Framework 4.5+ gerektirir."
-        "System.Net.Http" = "HTTP assembly'si. .NET Framework 4.5+ gerektirir."
-        "System.Data" = "Veritabanı assembly'si. .NET Framework'ün bir parçasıdır."
-        "System.Xml" = "XML assembly'si. .NET Framework'ün bir parçasıdır."
+    $oneriler = @{
+        "System.Windows.Forms" = "PowerShell'i yönetici olarak çalıştır."
+        "System.Drawing" = ".NET Framework 4.8 veya üzerini yükleyin."
+        "System.Speech" = "Windows Özellikleri > Konuşma API'si'ni etkinleştir."
+        "System.Runtime.InteropServices" = "Windows'ta hazırdır."
+        "System.IO.Compression" = ".NET Framework 4.5+ gerektirir."
+        "System.Net.Http" = ".NET Framework 4.5+ gerektirir."
+        "System.Data" = ".NET Framework'ün bir parçasıdır."
+        "System.Xml" = ".NET Framework'ün bir parçasıdır."
     }
-    
-    if ($öneriler.ContainsKey($assemblyName)) {
-        return $öneriler[$assemblyName]
+    if ($oneriler.ContainsKey($assemblyName)) {
+        return $oneriler[$assemblyName]
     } else {
         return ".NET Framework'ü güncellemeyi veya Visual Studio Redistributable'ı yüklemeyi deneyin."
     }
 }
 
-# ============================================================
-# 4. ANA KONTROL FONKSİYONU
-# ============================================================
-function KütüphaneKontrolEt {
-    Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "   EN – OTOMATİK KÜTÜPHANE YÜKLEYİCİ" -ForegroundColor Cyan
-    Write-Host "============================================================" -ForegroundColor Cyan
-    
-    $assemblies = Get-AssemblyList
-    if ($assemblies.Count -eq 0) {
-        Write-Host "[EN] Assembly listesi boş veya request.txt bulunamadı." -ForegroundColor Yellow
-        return
-    }
+Write-Host "============================================================" -ForegroundColor Cyan
+Write-Host "   EN – KÜTÜPHANE KONTROLÜ" -ForegroundColor Cyan
+Write-Host "============================================================" -ForegroundColor Cyan
 
-    $toplam = $assemblies.Count
-    $mevcut = 0
-    $eksik = 0
-    $yüklenen = 0
+$assemblies = Get-AssemblyList
+if ($assemblies.Count -eq 0) {
+    Write-Host "[EN] Assembly listesi bos veya request.txt bulunamadi." -ForegroundColor Yellow
+    exit
+}
 
-    foreach ($asm in $assemblies) {
-        Write-Host "[EN] Kontrol ediliyor: $asm" -ForegroundColor Yellow
-        $sonuc = Test-Assembly $asm
-        
-        if ($sonuc.Mevcut) {
-            Write-Host "[EN] ✅ $asm mevcut (Yöntem: $($sonuc.YüklenmeYöntemi))" -ForegroundColor Green
-            $mevcut++
-        } else {
-            Write-Host "[EN] ❌ $asm EKSİK!" -ForegroundColor Red
-            $eksik++
-            
-            # Otomatik yükleme dene (çevrimiçi veya local)
-            Write-Host "[EN] $asm yüklenmeye çalışılıyor..." -ForegroundColor Yellow
-            try {
-                # NuGet veya başka bir kaynaktan indirme simülasyonu
-                Write-Host "[EN] $asm bulunamadı. Manuel yükleme gerekli." -ForegroundColor Yellow
-                Write-Host "[EN] Öneri: $(Get-ÇözümÖnerisi $asm)" -ForegroundColor White
-            } catch {}
-        }
-    }
+$toplam = $assemblies.Count
+$mevcut = 0
+$eksik = 0
+$eksikListe = @()
 
-    # Özet rapor
-    Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "   KÜTÜPHANE KONTROL RAPORU" -ForegroundColor Cyan
-    Write-Host "============================================================" -ForegroundColor Cyan
-    Write-Host "Toplam Assembly  : $toplam" -ForegroundColor Yellow
-    Write-Host "Mevcut           : $mevcut" -ForegroundColor Green
-    Write-Host "Eksik            : $eksik" -ForegroundColor Red
-
-    if ($eksik -gt 0) {
-        Write-Host "`n[EN] Eksik assembly'ler tespit edildi. Aşağıdaki adımları izleyin:" -ForegroundColor Red
-        Write-Host "1. PowerShell'i yönetici olarak çalıştırın." -ForegroundColor Yellow
-        Write-Host "2. .NET Framework 4.8 veya üzerini yükleyin." -ForegroundColor Yellow
-        Write-Host "3. Windows Özellikleri'nden gerekli bileşenleri etkinleştirin." -ForegroundColor Yellow
+foreach ($asm in $assemblies) {
+    Write-Host "[EN] Kontrol ediliyor: $asm" -ForegroundColor Yellow
+    $sonuc = Test-Assembly $asm
+    if ($sonuc.Mevcut) {
+        Write-Host "[EN] ✅ $asm mevcut." -ForegroundColor Green
+        $mevcut++
     } else {
-        Write-Host "`n[EN] Tüm assembly'ler mevcut. Çalışmaya devam edebilirsiniz." -ForegroundColor Green
-    }
-
-    # Log kaydı
-    try {
-        Add-Content -Path $log -Value "[$(Get-Date)] KÜTÜPHANE KONTROLÜ: Toplam=$toplam, Mevcut=$mevcut, Eksik=$eksik"
-    } catch {
-        Write-Host "[EN] Log yazma hatası: $_" -ForegroundColor Red
+        Write-Host "[EN] ❌ $asm EKSIK!" -ForegroundColor Red
+        $eksik++
+        $eksikListe += $asm
+        Write-Host "[EN] Öneri: $(Get-CozumOnerisi $asm)" -ForegroundColor Yellow
     }
 }
 
-# ============================================================
-# 5. ÇALIŞTIR
-# ============================================================
-KütüphaneKontrolEt
+Write-Host "============================================================" -ForegroundColor Cyan
+Write-Host "   RAPOR" -ForegroundColor Cyan
+Write-Host "============================================================" -ForegroundColor Cyan
+Write-Host "Toplam : $toplam" -ForegroundColor Yellow
+Write-Host "Mevcut : $mevcut" -ForegroundColor Green
+Write-Host "Eksik  : $eksik" -ForegroundColor Red
+
+if ($eksik -gt 0) {
+    Write-Host "`n[EN] Eksik assembly'ler:" -ForegroundColor Red
+    foreach ($hata in $eksikListe) {
+        Write-Host "- $hata" -ForegroundColor Yellow
+        Write-Host "  Çözüm: $(Get-CozumOnerisi $hata)" -ForegroundColor White
+    }
+} else {
+    Write-Host "[EN] Tüm assembly'ler mevcut." -ForegroundColor Green
+}
+
+try {
+    Add-Content -Path $log -Value "[$(Get-Date)] KUTUPHANE KONTROLU: Toplam=$toplam, Mevcut=$mevcut, Eksik=$eksik"
+} catch {}
