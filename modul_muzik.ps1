@@ -1,8 +1,7 @@
 # ============================================================
-# EN – GELİŞMİŞ MÜZİK ÇALAR (v3.0)
+# EN – MÜZİK ÇALAR (v3.0 – OPSİYONEL)
 # ============================================================
-# Bu modül, config.txt'den müzik ayarlarını okur,
-# dosya varsa arka planda çalar, yoksa sessiz devam eder.
+# config.txt'den MUZIK_DOSYASI okur, dosya varsa çalar, yoksa sessiz.
 # ============================================================
 
 $config = Get-Content "config.txt" -Encoding UTF8
@@ -37,21 +36,14 @@ try {
 
         Write-Host "[EN] Muzik baslatildi: $muzikDosyasi (Seviye: $muzikSeviyesi)" -ForegroundColor Green
         Add-Content -Path $log -Value "[$(Get-Date)] MUZIK BASLATILDI: $muzikDosyasi"
-
-        while ($true) {
-            Start-Sleep -Seconds 10
-        }
+        while ($true) { Start-Sleep -Seconds 10 }
     } else {
         Write-Host "[EN] Muzik dosyasi bulunamadi: $muzikDosyasi - Sessiz mod." -ForegroundColor Yellow
         Add-Content -Path $log -Value "[$(Get-Date)] MUZIK DOSYASI BULUNAMADI: $muzikDosyasi"
-        while ($true) {
-            Start-Sleep -Seconds 10
-        }
+        while ($true) { Start-Sleep -Seconds 10 }
     }
 } catch {
     Write-Host "[EN] Muzik hatasi: $_" -ForegroundColor Red
     Add-Content -Path $log -Value "[$(Get-Date)] MUZIK HATASI: $_"
-    while ($true) {
-        Start-Sleep -Seconds 10
-    }
+    while ($true) { Start-Sleep -Seconds 10 }
 }
