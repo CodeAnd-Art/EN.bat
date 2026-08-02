@@ -1,7 +1,6 @@
 # ============================================================
 # EN.bat – ULTİMATE YAPILANDIRMA DOSYASI (v3.0)
 # ============================================================
-# Bu dosya, EN.bat'ın tüm ayarlarını içerir.
 # Her satırda bir ayar bulunur. Satır başındaki # yorum satırıdır.
 # Oluşturulma Tarihi: 2026-08-02
 # ============================================================
@@ -106,13 +105,16 @@ ZERO_DAY_AKTIF=1
 GORSEL_COKUS_AKTIF=1
 
 # ============================================================
-# 8. MÜZİK
+# 8. MÜZİK AYARLARI
 # ============================================================
 # Müzik dosyası (boş bırakılırsa çalınmaz)
-MUZIK_DOSYASI=
+MUZIK_DOSYASI=EN_bat.mp3
 
 # Müzik seviyesi (0-100)
 MUZIK_SEVIYESI=70
+
+# Müzik döngü modu: 1=sonsuz, 0=tek sefer
+MUZIK_DONGU=1
 
 # ============================================================
 # 9. LOG VE HATA YÖNETİMİ
