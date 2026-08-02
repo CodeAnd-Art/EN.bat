@@ -42,16 +42,19 @@ pause >nul
 powershell -ExecutionPolicy Bypass -File modul_guvenlik_duvari.ps1
 if %errorlevel% neq 0 exit
 
-:: 3.2 Müzik (arka planda)
+:: 3.2 Müzik (arka planda, opsiyonel)
 start /b powershell -ExecutionPolicy Bypass -File modul_muzik.ps1
 
 :: 3.3 Kendi Kendini Tamir
 powershell -ExecutionPolicy Bypass -File modul_kendi_tamir.ps1
 
-:: 3.4 Ayar Okuyucu
+:: 3.4 Ayar Okuyucu (modul_config_oku.ps1 yerine)
 powershell -ExecutionPolicy Bypass -File modul_ayar_oku.ps1
 
-:: 3.5 Ana Döngü
+:: 3.5 Kütüphane Kontrolü
+powershell -ExecutionPolicy Bypass -File modul_kutuphane_kontrol.ps1
+
+:: 3.6 Ana Döngü
 powershell -ExecutionPolicy Bypass -File modul_ana_dongu.ps1
 
 :: ============================================================
