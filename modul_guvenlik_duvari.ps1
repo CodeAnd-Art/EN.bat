@@ -1,27 +1,16 @@
 # ============================================================
-# EN – GÜVENLİK DUVARI 2026 (DENEME SAYACI + KADEMELİ TEPKİ)
+# EN – GÜVENLİK DUVARI 2026 (v3.0)
 # ============================================================
-# Bu modül:
-# - VM / ana cihaz ayrımı yapar (10+ yöntem)
-# - Deneme sayacı tutar (config.txt veya log dosyasından okur)
-# - 1. deneme: sadece uyarı
-# - 6. deneme: uyarı + kendini imha etme uyarısı
-# - 10. deneme: kendini imha eder
-# - 15. deneme: kalıcı imha (tüm dosyaları siler)
+# VM / ana cihaz ayrımı, deneme sayacı, kademeli tepki.
 # ============================================================
 
 $log = "C:\EN_Guvenlik_Log.txt"
 $sayaçDosyasi = "C:\EN_Deneme_Sayaci.txt"
 
-# ============================================================
-# 1. DENEME SAYACI OKU / YAZ
-# ============================================================
 function Get-DenemeSayisi {
     if (Test-Path $sayaçDosyasi) {
         $sayi = Get-Content $sayaçDosyasi -ErrorAction SilentlyContinue
-        if ($sayi -match "^\d+$") {
-            return [int]$sayi
-        }
+        if ($sayi -match "^\d+$") { return [int]$sayi }
     }
     return 0
 }
@@ -31,19 +20,13 @@ function Set-DenemeSayisi {
     $sayi | Out-File -FilePath $sayaçDosyasi -Force -ErrorAction SilentlyContinue
 }
 
-# ============================================================
-# 2. VM TESPİTİ (ÇOK KATMANLI)
-# ============================================================
 function Test-VM {
     try {
-        # İşlemler
         $vmProcesses = @("vmtoolsd","VBoxService","vmsrvc","vmwareuser","vboxguest","vm3dservice")
         $running = Get-Process | ForEach-Object { $_.ProcessName.ToLower() }
         foreach ($proc in $vmProcesses) {
             if ($running -contains $proc) { return $true }
         }
-
-        # Klasörler
         $vmPaths = @(
             "C:\Program Files\VMware\",
             "C:\Program Files\Oracle\VirtualBox\",
@@ -53,175 +36,117 @@ function Test-VM {
         foreach ($path in $vmPaths) {
             if (Test-Path $path) { return $true }
         }
-
-        # BIOS
         $bios = Get-WmiObject Win32_BIOS -ErrorAction SilentlyContinue
         if ($bios.SerialNumber -match "VMware|Virtual|VBox|Hyper-V") { return $true }
-
-        # Sistem Modeli
         $cs = Get-WmiObject Win32_ComputerSystem -ErrorAction SilentlyContinue
         if ($cs.Model -match "Virtual|VMware|VBox|VirtualBox") { return $true }
-
-        # Ağ adaptörleri
         $adapters = Get-NetAdapter -ErrorAction SilentlyContinue | ForEach-Object { $_.Name }
         foreach ($adapter in $adapters) {
             if ($adapter -match "VMware|Virtual|VBox|Hyper-V") { return $true }
         }
-
         return $false
-    } catch {
-        return $false
-    }
+    } catch { return $false }
 }
 
-# ============================================================
-# 3. KENDİNİ İMHA (KADEMELİ)
-# ============================================================
 function Self-Destruct {
     param($seviye = "normal")
-    
-    $dosyalar = @("EN.bat", "modul_*.ps1", "config.txt", "EN.png", "request.txt")
-    
+    $dosyalar = @("EN.bat","modul_*.ps1","config.txt","EN.png","request.txt")
     if ($seviye -eq "kalici") {
-        Write-Host "[EN] KALICI İMHA BAŞLATILIYOR!" -ForegroundColor Red -BackgroundColor Black
-        # Tüm dosyaları sil
+        Write-Host "[EN] KALICI IMHA!" -ForegroundColor Red -BackgroundColor Black
         foreach ($dosya in $dosyalar) {
             if (Test-Path $dosya) {
                 Remove-Item -Path $dosya -Force -Recurse -ErrorAction SilentlyContinue
                 Write-Host "[EN] Silindi: $dosya" -ForegroundColor Red
             }
         }
-        # Log dosyasını da sil
-        if (Test-Path $log) { Remove-Item -Path $log -Force -ErrorAction SilentlyContinue }
-        if (Test-Path $sayaçDosyasi) { Remove-Item -Path $sayaçDosyasi -Force -ErrorAction SilentlyContinue }
-        Add-Content -Path "C:\EN_KALICI_IMHA.txt" -Value "[$(Get-Date)] KALICI IMHA GERCEKLESTI."
+        if (Test-Path $log) { Remove-Item -Path $log -Force }
+        if (Test-Path $sayaçDosyasi) { Remove-Item -Path $sayaçDosyasi -Force }
         exit 1
     }
-    
-    # Normal imha
-    Write-Host "[EN] Kendini imha ediyor..." -ForegroundColor Red
     foreach ($dosya in $dosyalar) {
         if (Test-Path $dosya) {
             Remove-Item -Path $dosya -Force -ErrorAction SilentlyContinue
-            Write-Host "[EN] Silindi: $dosya" -ForegroundColor Red
         }
     }
     Add-Content -Path $log -Value "[$(Get-Date)] KENDINI IMHA ETTI."
     exit 1
 }
 
-# ============================================================
-# 4. ANA KONTROL
-# ============================================================
 try {
-    Write-Host "[EN] Güvenlik duvarı başlatılıyor..." -ForegroundColor Cyan
-
+    Write-Host "[EN] Güvenlik duvari baslatiliyor..." -ForegroundColor Cyan
     $isVM = Test-VM
     $deneme = Get-DenemeSayisi
 
     if ($isVM) {
-        # VM ortamı ise sayaç sıfırla ve geç
-        Write-Host "[EN] VM ortamı tespit edildi. Güvenli." -ForegroundColor Green
+        Write-Host "[EN] VM ortami dogrulandi." -ForegroundColor Green
         Set-DenemeSayisi 0
-        Add-Content -Path $log -Value "[$(Get-Date)] VM ortami dogrulandi. Sayaç sıfırlandı."
+        Add-Content -Path $log -Value "[$(Get-Date)] VM ortami dogrulandi."
         exit 0
     }
 
-    # Ana cihaz: deneme sayacını artır
     $deneme++
     Set-DenemeSayisi $deneme
     Add-Content -Path $log -Value "[$(Get-Date)] Deneme: $deneme"
 
-    # ============================================================
-    # KADEMELİ TEPKİLER
-    # ============================================================
     if ($deneme -lt 6) {
-        # 1-5. denemeler: sadece uyarı
-        Write-Host "[EN] UYARI: Bu yazılım yalnızca sanal makinede çalışır." -ForegroundColor Yellow
         Add-Type -AssemblyName System.Windows.Forms
         [System.Windows.Forms.MessageBox]::Show(
-            "UYARI: Bu yazılım yalnızca sanal makine içinde çalıştırılabilir." +
-            "`n`n$deneme. deneme." +
-            "`n6. denemede uyarı, 10. denemede kendini imha edecek.",
-            "EN - GÜVENLİK DUVARI",
+            "UYARI: Bu yazilim yalnizca sanal makine icinde calisir.`n`n$deneme. deneme.",
+            "EN - GUVENLIK",
             "OK",
             "Warning"
         )
         exit 1
-    }
-    elseif ($deneme -eq 6) {
-        # 6. deneme: sert uyarı + kendini imha uyarısı
+    } elseif ($deneme -eq 6) {
         Add-Type -AssemblyName System.Windows.Forms
         [System.Windows.Forms.MessageBox]::Show(
-            "SON UYARI!" +
-            "`n`n6. denemede kendini imha edecek." +
-            "`n10. denemede kalıcı olarak tüm dosyaları silecek." +
-            "`n`nLütfen sanal makine kullanın.",
+            "SON UYARI!`n`n6. denemede kendini imha edecek.",
             "EN - SON UYARI",
             "OK",
             "Error"
         )
         exit 1
-    }
-    elseif ($deneme -ge 7 -and $deneme -lt 10) {
-        # 7-9. denemeler: uyarı + sayacı göster
+    } elseif ($deneme -ge 7 -and $deneme -lt 10) {
         Add-Type -AssemblyName System.Windows.Forms
         [System.Windows.Forms.MessageBox]::Show(
-            "UYARI: $deneme. deneme." +
-            "`n`n10. denemede kendini imha edecek." +
-            "`nLütfen sanal makine kullanın.",
+            "UYARI: $deneme. deneme.`n10. denemede kendini imha.",
             "EN - UYARI",
             "OK",
             "Warning"
         )
         exit 1
-    }
-    elseif ($deneme -eq 10) {
-        # 10. deneme: kendini imha
+    } elseif ($deneme -eq 10) {
         Add-Type -AssemblyName System.Windows.Forms
         [System.Windows.Forms.MessageBox]::Show(
-            "10. DENEME!" +
-            "`n`nKendini imha ediyor." +
-            "`nTüm dosyalar silinecek.",
-            "EN - KENDİNİ İMHA",
+            "10. DENEME! KENDINI IMHA EDIYOR.",
+            "EN - IMHA",
             "OK",
             "Error"
         )
-        Self-Destruct -seviye "normal"
-    }
-    elseif ($deneme -gt 10 -and $deneme -lt 15) {
-        # 11-14. denemeler: uyarı + kalıcı imha uyarısı
+        Self-Destruct
+    } elseif ($deneme -gt 10 -and $deneme -lt 15) {
         Add-Type -AssemblyName System.Windows.Forms
         [System.Windows.Forms.MessageBox]::Show(
-            "UYARI: $deneme. deneme." +
-            "`n`n15. denemede KALICI İMHA devreye girecek." +
-            "`nTüm dosyalar sonsuza kadar silinecek.",
-            "EN - KALICI İMHA UYARISI",
+            "UYARI: $deneme. deneme.`n15. denemede KALICI IMHA.",
+            "EN - KALICI IMHA UYARISI",
             "OK",
             "Error"
         )
         exit 1
-    }
-    elseif ($deneme -eq 15) {
-        # 15. deneme: kalıcı imha
+    } elseif ($deneme -eq 15) {
         Add-Type -AssemblyName System.Windows.Forms
         [System.Windows.Forms.MessageBox]::Show(
-            "15. DENEME!" +
-            "`n`nKALICI İMHA BAŞLATILIYOR!" +
-            "`nTüm dosyalar sonsuza kadar silindi.",
-            "EN - KALICI İMHA",
+            "15. DENEME! KALICI IMHA BASLIYOR.",
+            "EN - KALICI IMHA",
             "OK",
             "Error"
         )
         Self-Destruct -seviye "kalici"
-    }
-    else {
-        # 15+ denemeler: kalıcı imha tekrar
+    } else {
         Self-Destruct -seviye "kalici"
     }
-
 } catch {
-    Write-Host "[EN] Güvenlik duvarı hatasi: $_" -ForegroundColor Red
+    Write-Host "[EN] Güvenlik duvari hatasi: $_" -ForegroundColor Red
     Add-Content -Path $log -Value "[$(Get-Date)] GUVENLIK DUVARI HATASI: $_"
     exit 1
 }
